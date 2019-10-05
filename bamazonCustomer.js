@@ -47,60 +47,83 @@ connection.connect(function(err) {
         ['Product ID', 'Product name', 'Department name', 'Quantity in stock','Price']
       )
       for (var i = 0; i < results.length; i++) {
-         table.push(
-              [results[i].id, results[i].product_name, results[i].department_name, results[i].stock_quantity, , results[i].price ]
-           );
-           }
+        table.push(
+          [results[i].id, results[i].product_name, results[i].department_name, results[i].stock_quantity, , results[i].price ]
+       );
+       }
       console.log(table.toString());
 
-inquirer.prompt([
-{   type: "input",
-    name: "id",
-    message: "Enter the ID of the product you would like to buy. [Quit with Q]"
-},
-
-])
-.then(function(response) {
-  if (response.id  === "q") {
-        console.log("thanks for comming");
-        connection.end();
-      } else {
-        inquirer.prompt([
-          {   type: "input",
-            name: "quantity",
-            message: "how many units of this product  would you like to buy??? [Quit with Q]"
+      inquirer.prompt([
+        {   type: "input",
+            name: "id",
+            message: "Enter the ID of the product you would like to buy. [Quit with Q]"
         },
+        
         ])
         .then(function(response) {
-          if (response.quantity  === "q") {
-            // console.log(response);
-            console.log("thanks for comming");
-            connection.end();
-          } 
-          // else {
-            // 
-//             console.log(table[1][3]);
-//             console.log("this is quantity" + " " + quantity);
-//             table.push(table[1][3]);
-//             console.log(table[1][3]);
-//             console.log(table.toString());
+          if (response.id  === "q") {
+                console.log("thanks for comming");
+                connection.end();
+                var lines = process.stdout.getWindowSize()[1];
+                for(var i = 0; i < lines; i++) {
+                console.log('\r\n');
+                var fs = require("fs");
 
+                }
+              } else {
+                inquirer.prompt([
+                  {   type: "input",
+                    name: "quantity",
+                    message: "how many units of this product  would you like to buy??? [Quit with Q]"
+                },
+                ])
+                .then(function(response) {
+                  if (response.quantity  === "q") {
+                    // console.log(response);
+                    console.log("thanks for comming");
+                    connection.end();
+                    var lines = process.stdout.getWindowSize()[1];
+                for(var i = 0; i < lines; i++) {
+                console.log('\r\n');
+                var fs = require("fs");
 
-// }
+                }
+                  } else {
+                    
+                  }
 
-start();
+                  // start();
 })
-
 }
-
-
-
-
 })
-
 })
-
 }
+                  // else {
+                    // 
+        //             console.log(table[1][3]);
+        //             console.log("this is quantity" + " " + quantity);
+        //             table.push(table[1][3]);
+        //             console.log(table[1][3]);
+        //             console.log(table.toString());
+        
+        
+        // }
+        
+       
+        
+        
+        
+
+
+
+
+
+
+
+
+
+
+
 
 
 
