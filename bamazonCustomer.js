@@ -1,6 +1,15 @@
 var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require('cli-table');
+var color = require('colors-cli/safe')
+var error = color.red.bold;
+var warn = color.yellow;
+var notice = color.blue;
+console.log(error('Error!'));
+console.log(warn('Warning'));
+console.log(notice('Notice'));
+// var quantity = 0;
+var pName;
 
 // create the connection information for the sql database
 var connection = mysql.createConnection({
@@ -20,10 +29,11 @@ var connection = mysql.createConnection({
 connection.connect(function(err) {
     if (err) throw err;
     console.log("connected as id " + connection.threadId);
-    afterConnection();
+    start();
   });
   
-  function afterConnection() {
+  // *********************    Load the talbe ***************************
+  function start() {
     // connection.end();
    connection.query("SELECT * FROM products", function(err, results) {
       if (err) throw err;
@@ -37,33 +47,79 @@ connection.connect(function(err) {
         ['Product ID', 'Product name', 'Department name', 'Quantity in stock','Price']
       )
       for (var i = 0; i < results.length; i++) {
-         
-        table.push(
-
-            [results[i].item_id, results[i].product_name, results[i].department_name, results[i].stock_quantity, , results[i].price ]
-           
-        );
-        }
+         table.push(
+              [results[i].id, results[i].product_name, results[i].department_name, results[i].stock_quantity, , results[i].price ]
+           );
+           }
       console.log(table.toString());
-      // startpage();
-    })
-     
-    }
 
-  // function startpage() {
-  //   // query the database for all items being auctioned
-  //   //   if (err) throw err;
-  //     // once you have the items, prompt the user for which they'd like to bid on
-  //     inquirer
-  //       .prompt([
-  //         {
-  //           type: "input",
-  //           name: "name",
-  //           message: "Who are you???"
-  //         },
-         
-  //       ])
+inquirer.prompt([
+{   type: "input",
+    name: "id",
+    message: "Enter the ID of the product you would like to buy. [Quit with Q]"
+},
+
+])
+.then(function(response) {
+  if (response.id  === "q") {
+        console.log("thanks for comming");
+        connection.end();
+      } else {
+        inquirer.prompt([
+          {   type: "input",
+            name: "quantity",
+            message: "how many units of this product  would you like to buy??? [Quit with Q]"
+        },
+        ])
+        .then(function(response) {
+          if (response.quantity  === "q") {
+            // console.log(response);
+            console.log("thanks for comming");
+            connection.end();
+          } 
+          // else {
+            // 
+//             console.log(table[1][3]);
+//             console.log("this is quantity" + " " + quantity);
+//             table.push(table[1][3]);
+//             console.log(table[1][3]);
+//             console.log(table.toString());
+
+
+// }
+
+start();
+})
+
+}
+
+
+
+
+})
+
+})
+
+}
+
+
+
+
+
+
+ 
+ 
+
+
+  
+
+
+
+
+
+
+
+
+ 
+
       
-   
-  // }
-  // startpage();
