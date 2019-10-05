@@ -89,7 +89,22 @@ connection.connect(function(err) {
 
                 }
                   } else {
-                    
+                    connection.query(
+                      "UPDATE products SET ? WHERE ?",
+                      [
+                        {
+                          stock_quantity: response.quantity
+                        },
+                        {
+                          id: response.id
+                        }
+                      ],
+                      function(error) {
+                        if (error) throw err;
+                        console.log("\nPurchase of succesful!\n");
+                        start();
+                      }
+                    );
                   }
 
                   // start();
