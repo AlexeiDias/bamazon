@@ -2,6 +2,8 @@ var mysql = require("mysql");
 var inquirer = require("inquirer");
 var Table = require('cli-table');
 var color = require('colors-cli/safe')
+var colors = require('colors');
+
 var error = color.red.bold;
 var warn = color.yellow;
 var notice = color.blue;
@@ -52,74 +54,95 @@ connection.connect(function(err) {
        );
        }
       console.log(table.toString());
+                    console.log(table[1][3]);
+                    console.log(table[1][0]);
+
+                    // console.log("this is quantity" + " " + quantity);
+                    // table.push(table[1][3]);
+                    console.log(table[1][3]);
+                    // console.log(table.toString());
 
       inquirer.prompt([
         {   type: "input",
             name: "id",
             message: "Enter the ID of the product you would like to buy. [Quit with Q]"
         },
+        {
+          name: "quantity",
+          type: "input",
+          message: "How many would you like to buy?"
+        }
         
         ])
-        .then(function(response) {
-          if (response.id  === "q") {
-                console.log("thanks for comming");
-                connection.end();
-                var lines = process.stdout.getWindowSize()[1];
-                for(var i = 0; i < lines; i++) {
-                console.log('\r\n');
-                var fs = require("fs");
+        .then(function(answer) {
+          console.log(answer.id)
 
-                }
-              } else {
-                inquirer.prompt([
-                  {   type: "input",
-                    name: "quantity",
-                    message: "how many units of this product  would you like to buy??? [Quit with Q]"
-                },
-                ])
-                .then(function(response) {
-                  if (response.quantity  === "q") {
-                    // console.log(response);
-                    console.log("thanks for comming");
-                    connection.end();
-                    var lines = process.stdout.getWindowSize()[1];
-                for(var i = 0; i < lines; i++) {
-                console.log('\r\n');
-                var fs = require("fs");
+          // get the information of the chosen item
+          var chosenItem;
+          var stockQuantity;
+          for (var i = 0; i < table.length; i++) {
+            console.log(answer.id)
 
-                }
-                  } else {
-                    connection.query(
-                      "UPDATE products SET ? WHERE ?",
-                      [
-                        {
-                          stock_quantity: response.quantity
-                        },
-                        {
-                          id: response.id
-                        }
-                      ],
-                      function(error) {
-                        if (error) throw err;
-                        console.log("\nPurchase of succesful!\n");
-                        start();
-                      }
-                    );
-                  }
+            if (table[1][0] == answer.id) {
+              // console.log(answer.id)
 
-                  // start();
-})
-}
-})
+              chosenItem = table[1][0];
+              stockQuantity = table[1][3];
+              console.log("uuuu" + answer.quantity);
+              console.log(stockQuantity);
+              console.log("hi");
+              console.log(chosenItem);
+            }
+          }
+  
+          // determine if bid was high enough
+          if (  stockQuantity < answer.quantity ) {
+            console.log("I'm sorry we don't have this many units in stock.".red);
+            // bid was high enough, so update db, let the user know, and start over
+            // connection.query(
+            //   "UPDATE auctions SET ? WHERE ?",
+            //   [
+            //     {
+            //       stock_quantity: answer.quantity
+            //     },
+            //     // {
+            //     //   id: answer.id
+            //     // }
+            //   ],
+            //   function(error) {
+            //     if (error) throw err;
+            //     console.log("Bid placed successfully!");
+                start();
+            //   }
+            // );
+          }
+          else {
+            // bid wasn't high enough, so apologize and start over
+            // connection.query(
+            //   "UPDATE auctions SET ? WHERE ?",
+            //   [
+            //     {
+            //       stock_quantity: answer.quantity
+            //     },
+            //     // {
+            //     //   id: chosenItem.id
+            //     // }
+            //   ],
+            //   function(error) {
+            //     if (error) throw err;
+            //     console.log("Bid placed successfully!");
+            //     start();
+            //   }
+            // );
+            console.log("Your bid was too low. Try again...");
+            start();
+          }
+        });
 })
 }
                   // else {
                     // 
-        //             console.log(table[1][3]);
-        //             console.log("this is quantity" + " " + quantity);
-        //             table.push(table[1][3]);
-        //             console.log(table[1][3]);
-        //             console.log(table.toString());
+                    
         
         
         // }
