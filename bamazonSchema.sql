@@ -37,6 +37,5 @@ values               ('surfboard', 'Sports', 100, 600);
 
 
 
-SELECT * FROM products;
 
 

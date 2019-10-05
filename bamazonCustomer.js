@@ -7,9 +7,9 @@ var colors = require('colors');
 var error = color.red.bold;
 var warn = color.yellow;
 var notice = color.blue;
-console.log(error('Error!'));
-console.log(warn('Warning'));
-console.log(notice('Notice'));
+// console.log(error('Error!'));
+// console.log(warn('Warning'));
+// console.log(notice('Notice'));
 // var quantity = 0;
 var pName;
 
@@ -30,7 +30,13 @@ var connection = mysql.createConnection({
 
 connection.connect(function(err) {
     if (err) throw err;
-    console.log("connected as id " + connection.threadId);
+    var lines = process.stdout.getWindowSize()[1];
+                for(var i = 0; i < lines; i++) {
+                console.log('\r\n');
+                var fs = require("fs");
+
+                }
+    console.log("\nconnected as id ".yellow + connection.threadId);
     start();
   });
   
@@ -46,7 +52,7 @@ connection.connect(function(err) {
                , 'right': '║' , 'right-mid': '╢' , 'middle': '│' }
       });
       table.push (
-        ['Product ID', 'Product name', 'Department name', 'Quantity in stock','Price']
+        ['Product ID', 'Product name', 'Department name', 'stock_quantity','Price']
       )
       for (var i = 0; i < results.length; i++) {
         table.push(
@@ -54,12 +60,12 @@ connection.connect(function(err) {
        );
        }
       console.log(table.toString());
-                    console.log(table[1][3]);
-                    console.log(table[1][0]);
+                    // console.log(table[1][3]);
+                    // console.log(table[1][0]);
 
                     // console.log("this is quantity" + " " + quantity);
                     // table.push(table[1][3]);
-                    console.log(table[1][3]);
+                    // console.log(table[1][3]);
                     // console.log(table.toString());
 
       inquirer.prompt([
@@ -75,77 +81,60 @@ connection.connect(function(err) {
         
         ])
         .then(function(answer) {
-          console.log(answer.id)
+          // console.log(answer.id)
 
           // get the information of the chosen item
           var chosenItem;
-          var stockQuantity;
-          for (var i = 0; i < table.length; i++) {
-            console.log(answer.id)
+          var newStockQuantity;
+          // for (var i = 0; i < table.length; i++) {
+            // console.log(answer.id)
 
             if (table[1][0] == answer.id) {
               // console.log(answer.id)
 
               chosenItem = table[1][0];
-              stockQuantity = table[1][3];
-              console.log("uuuu" + answer.quantity);
-              console.log(stockQuantity);
-              console.log("hi");
-              console.log(chosenItem);
+              newStockQuantity = table[1][3] - answer.quantity;
+              // console.log("uuuu" + answer.quantity);
+              // console.log("hi");
+              // console.log(chosenItem);
             }
-          }
+          // }
+          console.log(newStockQuantity);
+
   
           // determine if bid was high enough
-          if (  stockQuantity < answer.quantity ) {
-            console.log("I'm sorry we don't have this many units in stock.".red);
-            // bid was high enough, so update db, let the user know, and start over
-            // connection.query(
-            //   "UPDATE auctions SET ? WHERE ?",
-            //   [
-            //     {
-            //       stock_quantity: answer.quantity
-            //     },
-            //     // {
-            //     //   id: answer.id
-            //     // }
-            //   ],
-            //   function(error) {
-            //     if (error) throw err;
-            //     console.log("Bid placed successfully!");
+          if (  table[1][3] < answer.quantity ) {
+            console.log("\nI'm sorry we don't have this many units in stock.".red);
+            
                 start();
-            //   }
-            // );
-          }
+           }
           else {
-            // bid wasn't high enough, so apologize and start over
-            // connection.query(
-            //   "UPDATE auctions SET ? WHERE ?",
-            //   [
-            //     {
-            //       stock_quantity: answer.quantity
-            //     },
-            //     // {
-            //     //   id: chosenItem.id
-            //     // }
-            //   ],
-            //   function(error) {
-            //     if (error) throw err;
-            //     console.log("Bid placed successfully!");
-            //     start();
-            //   }
-            // );
-            console.log("Your bid was too low. Try again...");
-            start();
+            connection.query(
+              "UPDATE products SET ? WHERE ?",
+              [
+                {
+                  stock_quantity: newStockQuantity
+                },
+                {
+                  id: chosenItem
+                }
+              ],
+              function(error) {
+                if (error) throw err;
+                console.log("Bid placed successfully!");
+                start();
+              }
+            );
+           
+            // ****estava funcionando
+            // console.log("Your bid was too low. Try again...");
+            // start();
+            // ***&*********
           }
         });
 })
 }
-                  // else {
-                    // 
-                    
-        
-        
-        // }
+               
         
        
         
