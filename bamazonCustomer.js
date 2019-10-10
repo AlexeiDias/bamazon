@@ -99,7 +99,7 @@ connection.connect(function(err) {
               // console.log(chosenItem);
             }
           // }
-          console.log(newStockQuantity);
+        //   console.log(newStockQuantity);
 
   
           // determine if bid was high enough

@@ -1,52 +1,25 @@
 # bamazon
 
-## Bamazon sudo code
+##### Bamazon is an app that simulater an online store. It shows a table with itens availeble. Each item has an unique id. The tabel also shows the name of the product, the departament the product is listed and quatity in stock. It takes an order verify if the product exists and if the quantity is availeble in stock. It updates the stock. And restarts the app. The user ca exit the store if the key "q" is pressed.
 
-##### Create a database on mysql and call it amazon
-##### Create a table in the database bamazon and call it products
-##### Create a list of product with 
-##### Product Name
-##### Department  the product belongs
-##### Quantity in stock 
-##### Price
-##### unic id for each product with auto increment and make id primary key
-##### Select all products from the table products
-##### Display result to user
 
-#### Ask questions to the user
-##### Use inquirer to prompt	
-##### What is the id of the product you want to buy?
-##### How many units you want to buy?
-##### Use .then to get a hold of the answers from the prompt
+------
+### Video Demo
+[![Liri Demo video](./img/bamazon.png)](https://vimeo.com/365439480 "Liri Demo video")
 
-##### Give a chance to the user to quit the app when they type letter “Q”
-##### If use choice id is equal to 	“q”
-##### end connection and quit the app
+---
 
-##### Check if user s choice id is on product table
-##### If is not display message “id not found, please enter valid id and restart the app
-##### If id is on products table, check if the number of units that user wants to buy is available in products table on stock_quantity table
+## Technologies usen on the project
+* Github
+###### Github is a remote repository where we can store versions of our code.
+* Gitlab
+###### GitLab is a web-based DevOps lifecycle tool that provides a Git-repository manager providing wiki, issue-tracking and CI/CD pipeline features, using an open-source license, developed by GitLab Inc.
 
-##### if is not, display message  ‘ we don’t have this many units in stock  and restart the app
-##### if it is , deduct the quantity the user wants to buy from the products table stock_quantity total
-##### display message “ thanks for your business and restart the app
-##### Use the user response to evaluate if it was a letter “Q” or a id  number that exist on the products table within the id colunm 
-##### Check if the quantity  that  the user  want is available in stock
-##### If it is not tell the user that the quantity is not available 
-##### If quantity the user wants is available deduct the quantity from the total in stock
-##### Restart the app
+* JavaScript
+###### JavaScript, often abbreviated as JS, is a high-level, interpreted scripting language that conforms to the ECMAScript specification. JavaScript has curly-bracket syntax, dynamic typing, prototype-based object-orientation, and first-class functions.
 
-### Technologies to be used
-    *GitHub
-    *Inquirer
-    *Json
-    *MySql
-    *JavaScript
-
-#### Author
-Author
+---
+> Author
  Alexei Dias
  Linkedin 
  https://www.linkedin.com/in/alexei-dias-b4054a164/
-
-
